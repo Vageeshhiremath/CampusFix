@@ -4,7 +4,7 @@ import pool from '@/lib/db';
 export async function GET() {
   try {
     // We use the VIEW we created in the database!
-    const result = await pool.query(`
+    const result = await pool.query(` 
       SELECT 
         issue_id, 
         title, 
