@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CampusFix — Intelligent Campus Maintenance & Resource Prioritization
 
-## Getting Started
+## Problem Statement
+Campus maintenance issues are often reported through scattered channels, leading to delays and lack of prioritization. CampusFix centralizes reporting and uses a database-driven priority scoring system.
 
-First, run the development server:
+## Tech Stack
+- **Frontend/Backend**: Next.js 16 (App Router, TypeScript, Tailwind CSS)
+- **Database**: PostgreSQL 18
+- **Vector DB**: pgvector (extension)
+- **Auth**: Cookie-based sessions with role-based access
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Roles Supported
+- STUDENT (report issues)
+- TECHNICIAN (view and update assigned issues)
+- ADMIN (manage everything)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Advanced Database Features
+1. **Views**: `vw_unresolved_issues` — Joins 4 tables for dashboard queries
+2. **Stored Functions**: `calculate_priority_score()` — Dynamic priority computation
+3. **Triggers**: `trg_issue_status_change` — Auto-logs status changes
+4. **Transactions**: Used for atomic technician assignments
+5. **Indexing**: 18+ B-Tree indexes for performance
+6. **Vector Search**: `issue_embeddings` table with pgvector for semantic search
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Setup Instructions
+1. Run `01_base_tables.sql` in PostgreSQL
+2. Run `02_advanced_features.sql`
+3. Run `03_mock_data.sql`
+4. Create `.env.local` with `DATABASE_URL=postgresql://user:pass@localhost:5432/campusfix`
+5. `npm install && npm run dev`
+6. Open `http://localhost:3000/login`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Demo Credentials
+- Student: `alice@campus.edu`
+- Technician: `bob@campus.edu`
+- Admin: `admin@campus.edu`
