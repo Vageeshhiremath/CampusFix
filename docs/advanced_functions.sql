@@ -1,6 +1,4 @@
-/* ---------------------------------------------------------
-   ADVANCED FEATURE 1: VIEWS
-   --------------------------------------------------------- */
+-- Advanced Feature 1: Views
 CREATE VIEW vw_unresolved_issues AS
 SELECT 
     i.issue_id,
@@ -17,9 +15,7 @@ JOIN buildings b ON r.building_id = b.building_id
 JOIN users u ON i.reported_by = u.user_id
 WHERE i.status NOT IN ('RESOLVED', 'CLOSED');
 
-/* ---------------------------------------------------------
-   ADVANCED FEATURE 2: STORED FUNCTIONS
-   --------------------------------------------------------- */
+-- Advanced Feature 2: Stored Functions
 CREATE OR REPLACE FUNCTION calculate_priority_score(
     p_severity issue_severity,
     p_affected_users INTEGER,
@@ -39,9 +35,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-/* ---------------------------------------------------------
-   ADVANCED FEATURE 3: TRIGGERS
-   --------------------------------------------------------- */
+-- Advanced Feature 3: Triggers
 CREATE OR REPLACE FUNCTION log_issue_status_change()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -58,10 +52,8 @@ AFTER UPDATE ON issues
 FOR EACH ROW
 EXECUTE FUNCTION log_issue_status_change();
 
-/* ---------------------------------------------------------
-   ADVANCED FEATURE 4: VECTOR DATABASE (pgvector)
-   --------------------------------------------------------- */
--- Note: Requires pgvector extension to be installed on the server.
+-- Advanced Feature 4: Vector Database (pgvector)
+-- Requires pgvector extension to be installed on the server.
 CREATE EXTENSION IF NOT EXISTS vector;
 
 CREATE TABLE issue_embeddings (
@@ -81,8 +73,4 @@ CREATE INDEX idx_issue_embedding
 ON issue_embeddings 
 USING ivfflat (embedding_vector vector_cosine_ops);
 
-/* ---------------------------------------------------------
-   ADVANCED FEATURE 5 & 6: INDEXES & TRANSACTIONS
-   --------------------------------------------------------- */
--- Indexes are implemented in base_tables.sql
--- Transactions are implemented in mock_data.sql and DML scripts.
+-- Note: Advanced Features 5 & 6 (Indexing & Transactions) are implemented in base_tables.sql and mock_data.sql.
