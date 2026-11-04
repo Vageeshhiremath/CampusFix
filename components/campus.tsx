@@ -1,39 +1,80 @@
 "use client";
 
-import {
-  Activity,
-  AlertTriangle,
-  ArrowDownRight,
-  ArrowUpRight,
-  Bell,
-  Building2,
-  CalendarDays,
-  Check,
-  CheckCircle2,
-  ChevronDown,
-  CircleUserRound,
-  ClipboardList,
-  Clock3,
-  Filter,
-  LayoutDashboard,
-  Loader2,
-  MapPin,
-  Menu,
-  MessageSquare,
-  MoreHorizontal,
-  PanelLeftClose,
-  Plus,
-  Search,
-  Settings2,
-  ShieldCheck,
-  Sparkles,
-  Ticket,
-  TrendingUp,
-  Users2,
-  Wrench,
-  X,
-} from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+
+type IconProps = { className?: string; strokeWidth?: number };
+
+const iconPaths: Record<string, string> = {
+  Activity: "M3 12h4l3-9 4 18 3-9h4",
+  AlertTriangle: "M10.3 3.9 2.8 17a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0ZM12 9v4m0 4h.01",
+  ArrowDownRight: "M7 7l10 10M17 7v10H7",
+  ArrowUpRight: "M7 17 17 7M7 7h10v10",
+  Bell: "M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9m-8 12h4",
+  Building2: "M3 21h18M5 21V5l7-3v19m0-14h7v14M8 7h1m-1 4h1m-1 4h1m7-4h1m-1 4h1",
+  CalendarDays: "M8 2v4m8-4v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2Zm3 10h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01",
+  Check: "m5 12 4 4L19 6",
+  CheckCircle2: "M22 11.1V12a10 10 0 1 1-5.9-9.1M22 4 12 14l-3-3",
+  ChevronDown: "m6 9 6 6 6-6",
+  CircleUserRound: "M18 20a6 6 0 0 0-12 0m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 2a10 10 0 1 1-20 0 10 10 0 0 1 20 0Z",
+  ClipboardList: "M9 5H5v16h14V5h-4M9 3h6v4H9zM8 12h8m-8 4h8",
+  Clock3: "M12 8v4l3 2m7-2a10 10 0 1 1-20 0 10 10 0 0 1 20 0Z",
+  Filter: "M4 5h16l-6 7v6l-4 2v-8L4 5Z",
+  LayoutDashboard: "M3 3h8v8H3zm10 0h8v5h-8zm0 7h8v11h-8zM3 13h8v8H3z",
+  Loader2: "M12 2v4m0 12v4m10-10h-4M6 12H2m17.1-7.1-2.8 2.8M7.7 16.3l-2.8 2.8m14.2 0-2.8-2.8M7.7 7.7 4.9 4.9",
+  MapPin: "M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Zm-5 0a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z",
+  Menu: "M4 6h16M4 12h16M4 18h16",
+  MessageSquare: "M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z",
+  MoreHorizontal: "M5 12h.01M12 12h.01M19 12h.01",
+  PanelLeftClose: "M3 3h18v18H3zM9 3v18m6-12-3 3 3 3",
+  Plus: "M12 5v14m-7-7h14",
+  Search: "m21 21-4.3-4.3M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z",
+  Settings2: "M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M2 14h4m4-6h4m4 8h4",
+  ShieldCheck: "M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Zm-4-11 3 3 5-5",
+  Sparkles: "m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3Zm7 12 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z",
+  Ticket: "M2 9a3 3 0 0 0 0 6v4h20v-4a3 3 0 0 1 0-6V5H2v4Zm12-4v2m0 4v2m0 4v2",
+  TrendingUp: "m22 7-8.5 8.5-5-5L2 17m14-10h6v6",
+  Users2: "M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 10v-2a4 4 0 0 0-3-3.9m-1-12a4 4 0 0 1 0 7.8",
+  Wrench: "M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4L15 12l-3-3 2.7-2.7Z",
+  X: "M18 6 6 18M6 6l12 12",
+};
+
+function createIcon(name: keyof typeof iconPaths) {
+  return function InlineIcon({ className, strokeWidth = 1.8 }: IconProps) {
+    return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}><path d={iconPaths[name]} /></svg>;
+  };
+}
+
+const Activity = createIcon("Activity");
+const AlertTriangle = createIcon("AlertTriangle");
+const ArrowDownRight = createIcon("ArrowDownRight");
+const ArrowUpRight = createIcon("ArrowUpRight");
+const Bell = createIcon("Bell");
+const Building2 = createIcon("Building2");
+const CalendarDays = createIcon("CalendarDays");
+const Check = createIcon("Check");
+const CheckCircle2 = createIcon("CheckCircle2");
+const ChevronDown = createIcon("ChevronDown");
+const CircleUserRound = createIcon("CircleUserRound");
+const ClipboardList = createIcon("ClipboardList");
+const Clock3 = createIcon("Clock3");
+const Filter = createIcon("Filter");
+const LayoutDashboard = createIcon("LayoutDashboard");
+const Loader2 = createIcon("Loader2");
+const MapPin = createIcon("MapPin");
+const Menu = createIcon("Menu");
+const MessageSquare = createIcon("MessageSquare");
+const MoreHorizontal = createIcon("MoreHorizontal");
+const PanelLeftClose = createIcon("PanelLeftClose");
+const Plus = createIcon("Plus");
+const Search = createIcon("Search");
+const Settings2 = createIcon("Settings2");
+const ShieldCheck = createIcon("ShieldCheck");
+const Sparkles = createIcon("Sparkles");
+const Ticket = createIcon("Ticket");
+const TrendingUp = createIcon("TrendingUp");
+const Users2 = createIcon("Users2");
+const Wrench = createIcon("Wrench");
+const X = createIcon("X");
 
 type Severity = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
 type IssueStatus = "REPORTED" | "ASSESSED" | "ASSIGNED" | "IN_PROGRESS" | "ON_HOLD" | "RESOLVED" | "CLOSED";
