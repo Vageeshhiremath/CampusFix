@@ -410,7 +410,8 @@ CREATE INDEX idx_maintenance_technician
 CREATE INDEX idx_issue_resources_resource
     ON issue_resources(resource_id);
 
-
-
-
+-- DDL Demonstration: ALTER and DROP
+ALTER TABLE issues ADD COLUMN sla_deadline TIMESTAMP;
+ALTER TABLE issues DROP COLUMN sla_deadline;
+DROP TABLE IF EXISTS dummy_table_for_drop_demo;
 

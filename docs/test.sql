@@ -21,3 +21,22 @@ WHERE i.status NOT IN ('RESOLVED', 'CLOSED')
 GROUP BY b.building_name
 HAVING COUNT(i.issue_id) > 0
 ORDER BY unresolved_count DESC;
+
+-- 6. CTE (Common Table Expression) - Syllabus Unit 2
+-- Find issues with a priority score higher than the overall average
+WITH AveragePriority AS (
+    SELECT AVG(priority_score) AS avg_score FROM issues
+)
+SELECT issue_id, title, priority_score
+FROM issues, AveragePriority
+WHERE issues.priority_score > AveragePriority.avg_score;
+
+-- 7. Window Function - Syllabus Unit 2
+-- Rank technicians by the number of assignments they have
+SELECT 
+    u.full_name,
+    COUNT(a.assignment_id) AS total_assignments,
+    RANK() OVER (ORDER BY COUNT(a.assignment_id) DESC) as rank
+FROM issue_assignments a
+JOIN users u ON a.technician_id = u.user_id
+GROUP BY u.full_name;

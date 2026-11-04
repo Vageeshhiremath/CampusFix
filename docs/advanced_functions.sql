@@ -57,3 +57,32 @@ CREATE TRIGGER trg_issue_status_change
 AFTER UPDATE ON issues
 FOR EACH ROW
 EXECUTE FUNCTION log_issue_status_change();
+
+/* ---------------------------------------------------------
+   ADVANCED FEATURE 4: VECTOR DATABASE (pgvector)
+   --------------------------------------------------------- */
+-- Note: Requires pgvector extension to be installed on the server.
+CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE issue_embeddings (
+    embedding_id BIGSERIAL PRIMARY KEY,
+    issue_id BIGINT NOT NULL UNIQUE,
+    embedding_vector VECTOR(1536),
+    model_name VARCHAR(100) NOT NULL DEFAULT 'text-embedding-ada-002',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_embedding_issue 
+        FOREIGN KEY (issue_id) 
+        REFERENCES issues(issue_id) 
+        ON DELETE CASCADE
+);
+
+-- IVFFlat index using cosine distance for fast similarity search
+CREATE INDEX idx_issue_embedding 
+ON issue_embeddings 
+USING ivfflat (embedding_vector vector_cosine_ops);
+
+/* ---------------------------------------------------------
+   ADVANCED FEATURE 5 & 6: INDEXES & TRANSACTIONS
+   --------------------------------------------------------- */
+-- Indexes are implemented in base_tables.sql
+-- Transactions are implemented in mock_data.sql and DML scripts.
