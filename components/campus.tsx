@@ -37,7 +37,7 @@ import { useEffect, useMemo, useState } from "react";
 
 type Severity = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
 type IssueStatus = "REPORTED" | "ASSESSED" | "ASSIGNED" | "IN_PROGRESS" | "ON_HOLD" | "RESOLVED" | "CLOSED";
-type DashboardRole = "STUDENT" | "ADMIN" | "WORKER";
+type DashboardRole = "STUDENT" | "ADMIN" | "TECHNICIAN";
 
 type Issue = {
   issue_id: number;
