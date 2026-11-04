@@ -15,7 +15,7 @@ first.
 CampusFix uses a multi-paradigm database architecture to demonstrate
 enterprise-grade database design:
 
--   **Frontend / Backend:** Next.js 16 (App Router, TypeScript, Tailwind
+-   **Frontend/Backend:** Next.js 16 (App Router, TypeScript, Tailwind
     CSS)
 -   **Relational Database:** PostgreSQL 18 (ACID compliance, triggers,
     views)
@@ -170,7 +170,7 @@ terminal.
 6. Sign out, then sign in as `bob@campus.edu`. Update an issue status from
    the worker dashboard.
 
-7. Verify the status update and trigger audit entry:
+7. Verify the status update & trigger audit entry:
 
    ``` sql
    SELECT issue_id, title, status
@@ -213,7 +213,7 @@ definition and sample data before the viva.
 ### 3. Demonstrate the Trigger (Automatic Audit Log)
 
 1.  Sign in to the web application using a **TECHNICIAN** account.
-2.  Select an assigned issue and click **Fix & Resolve**.
+2.  Select an assigned issue & click **Fix & Resolve**.
 3.  Run this query in pgAdmin:
 
 ``` sql
