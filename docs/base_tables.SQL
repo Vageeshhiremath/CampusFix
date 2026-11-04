@@ -247,7 +247,7 @@ CREATE TABLE issue_assignments (
 );
 
 
-/* ---------------------------------------------------------
+/*
    10. STATUS HISTORY
    --------------------------------------------------------- */
 
@@ -414,4 +414,3 @@ CREATE INDEX idx_issue_resources_resource
 ALTER TABLE issues ADD COLUMN sla_deadline TIMESTAMP;
 ALTER TABLE issues DROP COLUMN sla_deadline;
 DROP TABLE IF EXISTS dummy_table_for_drop_demo;
-
